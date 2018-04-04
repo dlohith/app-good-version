@@ -9,7 +9,7 @@ const vendor = [
   'redux',
   'redux-observable',
   'react-toolbox',
-  'react-bootstrap-table',
+  'react-table',
   'react-hot-loader',
   'rxjs',
   'lodash',

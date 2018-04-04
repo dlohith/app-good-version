@@ -22,8 +22,6 @@ class AddPartnerDialog extends Component {
   ];
 
   render () {
-  	console.log(this.state.active);
-  	console.log(this.props.show);
     return (
       <div>
         <Dialog
