@@ -1,20 +1,54 @@
 import React, { Component } from 'react';
-import { Dialog, Input, Navigation } from 'react-toolbox';
-
+import { Dialog, BrowseButton, Button, Input, Navigation } from 'react-toolbox';
+import ReactFileReader from 'react-file-reader';
+import FileContentReader from '../file_manager/FileContentReader';
+import { parseString } from 'xml2js'
+import axios from 'axios';
 
 class SendFileDialog extends Component {
 
   state = {
-    active: this.props.show, name: '', file: ''
-  };
-  
-  handleChange = (name, value) => {
-    this.setState({...this.state, [name]: value});
+    active: this.props.show
   };
 
+  handleFile (fileHandle, fileTextContent) {
+    let self = this;
+    parseString(fileTextContent, function(error, result) {
+      if(error) {
+        console.log("Parse error : ", error);
+        return;
+      }
+      let jsonContent = JSON.stringify(result, null, 2);
+      console.log("xml2js : ", jsonContent);
+
+      fetch('http://localhost:8500/bzz:/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: jsonContent,
+        mode: 'no-cors'
+      }).then(function(response) {
+        console.log("swarm response : ", response);
+      })
+    });
+  }
+
+  uploadFileToSwarm (fileJSONContent) {
+    axios.post('http://localhost:8500/bzz:/', fileJSONContent)
+    .then(function (response) {
+      console.log("Success, check the hash: ", response);
+    })
+    .catch(function (error) {
+      console.log("Error :  ", response);
+    });
+    
+  }
+
   actions = [
-    { label: "Cancel", onClick: this.props.handleToggle },
-    { label: "Submit", onClick: this.props.handleToggle }
+    
   ];
 
   render () {
@@ -29,8 +63,7 @@ class SendFileDialog extends Component {
         >
         <hr/>
         <Navigation type='vertical'>
-          <Input type='text' label='Partner' name='name' />
-          <Input type='file' name='file' icon='file_upload' />
+          <FileContentReader handleFile={ this.handleFile }/>
         </Navigation>
         </Dialog>
       </div>
