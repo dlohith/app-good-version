@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "eslint .",
-    "start": "webpack-dev-server --inline",
+    "start": "webpack-dev-server --inline --mode development",
     "build": "NODE_ENV=production webpack"
   },
   "keywords": [],
@@ -64,6 +64,7 @@
     "redux": "^3.7.2",
     "redux-observable": "^0.18.0",
     "rxjs": "^5.5.8",
+    "web3": "^1.0.0-beta.34",
     "xml2js": "^0.4.19"
   }
 }

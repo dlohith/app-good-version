@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Dialog, BrowseButton, Button, Input, Navigation } from 'react-toolbox';
-import ReactFileReader from 'react-file-reader';
 import FileContentReader from '../file_manager/FileContentReader';
 import { parseString } from 'xml2js'
-import axios from 'axios';
 
 class SendFileDialog extends Component {
 
@@ -19,7 +17,7 @@ class SendFileDialog extends Component {
         return;
       }
       let jsonContent = JSON.stringify(result, null, 2);
-      console.log("xml2js : ", jsonContent);
+      // console.log("xml2js : ", jsonContent);
 
       fetch('http://localhost:8500/bzz:/', {
         method: 'POST',
@@ -28,23 +26,15 @@ class SendFileDialog extends Component {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: jsonContent,
-        mode: 'no-cors'
+        body: jsonContent
       }).then(function(response) {
-        console.log("swarm response : ", response);
-      })
+        return response.text();
+      }).then(function(data) {
+        console.log("File hash : " , data);
+      }).catch(function() {
+        console.log("Error message : ", e);
+      });
     });
-  }
-
-  uploadFileToSwarm (fileJSONContent) {
-    axios.post('http://localhost:8500/bzz:/', fileJSONContent)
-    .then(function (response) {
-      console.log("Success, check the hash: ", response);
-    })
-    .catch(function (error) {
-      console.log("Error :  ", response);
-    });
-    
   }
 
   actions = [

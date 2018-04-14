@@ -7,7 +7,10 @@ const devServer = {
   historyApiFallback: true,
   inline: true,
   noInfo: false,
-  headers: { 'Access-Control-Allow-Origin': '*' },
+  headers: { 
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+  },
   stats: {
     assets: false,
     colors: true,
